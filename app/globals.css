@@ -1,26 +1,132 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --brand: #0e8f86;
+  --brand-dark: #0b6f68;
+  --navy: #0d1b2e;
+  --ink: #14243b;
+  --bg: #f3f5f9;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-brand: var(--brand);
+  --color-brand-dark: var(--brand-dark);
+  --color-navy: var(--navy);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  background: var(--bg);
+  color: var(--ink);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ---------- animation ---------- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(32px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes dropArrow {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeUp { animation: fadeUp 0.4s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+.animate-fadeIn { animation: fadeIn 0.25s ease both; }
+.animate-slideInRight { animation: slideInRight 0.3s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+.animate-dropArrow { animation: dropArrow 0.3s ease both; }
+
+.delay-50 { animation-delay: 50ms; }
+.delay-100 { animation-delay: 100ms; }
+.delay-150 { animation-delay: 150ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-250 { animation-delay: 250ms; }
+.delay-300 { animation-delay: 300ms; }
+
+/* ---------- flowchart connectors ---------- */
+.flow-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 2px;
+  height: 34px;
+  margin: 0 auto;
+}
+.flow-connector::before {
+  content: "";
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, #c7d2df, #94a3b8);
+  border-radius: 2px;
+}
+.flow-connector::after {
+  content: "";
+  margin-top: -5px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 7px solid #94a3b8;
+}
+
+.flow-connector-h {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 2px;
+  margin: 0 auto;
+  background: linear-gradient(90deg, #c7d2df, #94a3b8);
+  position: relative;
+}
+.flow-connector-h::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 7px solid #94a3b8;
+}
+
+/* ---------- scrollbars ---------- */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.thin-scroll::-webkit-scrollbar { height: 8px; width: 8px; }
+.thin-scroll::-webkit-scrollbar-thumb { background: #d3dbe6; border-radius: 8px; }
+
+/* ---------- topic drawer ---------- */
+.topic-drawer {
+  transition: transform 0.32s cubic-bezier(0.2, 0.7, 0.3, 1);
+  transform: translateX(100%);
+}
+.topic-drawer.open { transform: translateX(0); }
+
+/* surface for class page hero.
+   The dot pattern lives on a negative z-index pseudo-element so it layers ON TOP
+   of the element's own background-image (the Tailwind gradient) while staying
+   BEHIND the content. Declaring it as a plain background-image here would
+   override the gradient entirely, because both set the same property. */
+.hero-tile {
+  position: relative;
+  isolation: isolate;
+}
+.hero-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.18) 1.5px, transparent 1.5px);
+  background-size: 18px 18px;
 }
